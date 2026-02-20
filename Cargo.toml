@@ -4,10 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-aes = "0.8"
+aes = { version = "0.8", features = ["zeroize"] }
 md-5 = "0.10"
 rsa = { version = "0.9", features = ["std"] }
 hex = "0.4"
 ureq = "2"
 anyhow = "1"
 bt_bencode = "0.8"
+thiserror = "2"
+cipher = "0.4.4"
+block-padding = "0.3"
+ecb = "0.1.2"

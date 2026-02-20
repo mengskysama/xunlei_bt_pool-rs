@@ -14,6 +14,8 @@ A Rust CLI tool to download `.torrent` files from XunLei's BT pool server by inf
 
 ## Usage
 
+### As a CLI Tool
+
 ```bash
 cargo run -- <infohash_hex> <output_file>
 ```
@@ -27,11 +29,31 @@ cargo run -- 36a971dca3863ce8c27058082816a47b1ce0afe7 output.torrent
 **Output:**
 
 ```
-[INFO] Querying infohash: 36a971dca3863ce8c27058082816a47b1ce0afe7
-[INFO] Request payload: 288 bytes
-[INFO] Response received: 23700 bytes
-[INFO] status=0, file_len=23637
 [OK] Wrote 23637 bytes to output.torrent
+```
+
+### As a Library / SDK
+
+You can also depend on this package directly in your own Rust applications to leverage the connection-pooling client.
+
+```rust
+use xunlei_bt_pool::Client;
+use std::fs;
+
+fn main() -> anyhow::Result<()> {
+    // 1. Create a client instance
+    let client = Client::new();
+    
+    // 2. Fetch torrent bytes via infohash string
+    let infohash = "36a971dca3863ce8c27058082816a47b1ce0afe7";
+    let torrent_data = client.fetch(infohash)?;
+    
+    // 3. Keep working with it (e.g., save to disk)
+    fs::write("output.torrent", &torrent_data)?;
+    println!("Successfully downloaded {} bytes!", torrent_data.len());
+    
+    Ok(())
+}
 ```
 
 ## Build
